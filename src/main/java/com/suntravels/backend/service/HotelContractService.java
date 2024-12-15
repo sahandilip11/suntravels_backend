@@ -126,4 +126,10 @@ public class HotelContractService {
     {
         contractRepo.deleteById( id );
     }
+
+    public HotelDto findByHotelName(String hotelName) {
+        Hotel hotel = hotelRepo.findByHotelName(hotelName)
+                               .orElseThrow(() -> new RuntimeException("Hotel not found with name: " + hotelName));
+        return new HotelDto(hotel.getHotelName());
+    }
 }

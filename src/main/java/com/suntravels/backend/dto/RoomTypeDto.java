@@ -20,6 +20,7 @@ public class RoomTypeDto
         this.maxNoOfAdults = maxNoOfAdults;
     }
 
+
     public Long getContractId()
     {
         return contractId;
