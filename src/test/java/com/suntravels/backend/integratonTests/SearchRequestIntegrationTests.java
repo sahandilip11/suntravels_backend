@@ -1,6 +1,5 @@
-package com.suntravels.backend.e2eTests;
+package com.suntravels.backend.integratonTests;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suntravels.backend.model.RoomRequest;
 import com.suntravels.backend.model.SearchRequest;
 import com.suntravels.backend.model.SearchResult;
@@ -13,13 +12,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SearchControllerE2ETest {
+public class SearchRequestIntegrationTests {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
