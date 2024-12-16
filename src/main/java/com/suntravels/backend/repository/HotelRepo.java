@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HotelRepo extends JpaRepository<Hotel, Long>
+public interface HotelRepo extends JpaRepository<Hotel,Long>
 {
     Optional<Hotel> findByHotelName( String hotelName );
 }

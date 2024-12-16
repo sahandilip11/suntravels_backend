@@ -3,7 +3,8 @@ package com.suntravels.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RoomRequest {
+public class RoomRequest
+{
     public RoomRequest( int numberOfRooms, int numberOfAdults )
     {
         this.numberOfRooms = numberOfRooms;

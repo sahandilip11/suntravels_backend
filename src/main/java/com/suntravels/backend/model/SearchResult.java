@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SearchResult {
+public class SearchResult
+{
 
-    public SearchResult( List<RoomType> roomType, BigDecimal price, String availabilityStatus,String hotelName )
+    public SearchResult( List<RoomType> roomType, BigDecimal price, String availabilityStatus, String hotelName )
     {
         this.roomType = roomType;
         this.price = price;

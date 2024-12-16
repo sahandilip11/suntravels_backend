@@ -46,7 +46,7 @@ public class RoomTypeDto
         return perPersonPrice;
     }
 
-    public void setPerPersonPrice(BigDecimal perPersonPrice )
+    public void setPerPersonPrice( BigDecimal perPersonPrice )
     {
         this.perPersonPrice = perPersonPrice;
     }

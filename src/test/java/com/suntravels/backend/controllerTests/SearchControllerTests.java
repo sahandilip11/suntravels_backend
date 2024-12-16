@@ -28,9 +28,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(SearchController.class)
-@Import(SearchControllerTests.TestConfig.class) // Import the test-specific configuration
-public class SearchControllerTests {
+@WebMvcTest( SearchController.class )
+@Import( SearchControllerTests.TestConfig.class ) // Import the test-specific configuration
+public class SearchControllerTests
+{
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,55 +43,60 @@ public class SearchControllerTests {
     private ObjectMapper objectMapper; // Use a shared instance
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         objectMapper = new ObjectMapper();
 
         // Register JavaTimeModule for handling LocalDate
-        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule( new JavaTimeModule() );
 
         // Disable serialization of dates as timestamps
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
     }
 
     @Test
-    void testSearchRooms() throws Exception {
+    void testSearchRooms() throws Exception
+    {
         SearchRequest searchRequest = new SearchRequest(
-                LocalDate.of(2024, 12, 15),
+                LocalDate.of( 2024, 12, 15 ),
                 5,
-                List.of(new RoomRequest(2, 2))
+                List.of( new RoomRequest( 2, 2 ) )
         );
 
         SearchResult mockResult = new SearchResult(
                 null,
-                BigDecimal.valueOf(1500),
+                BigDecimal.valueOf( 1500 ),
                 "Available",
                 "TestHotel"
         );
 
-        Mockito.when(searchService.searchRooms(Mockito.any(SearchRequest.class))).thenReturn(List.of(mockResult));
+        Mockito.when( searchService.searchRooms( Mockito.any( SearchRequest.class ) ) ).thenReturn( List.of( mockResult ) );
 
-        mockMvc.perform(post("/api/v1/search")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(searchRequest))) // Use the configured ObjectMapper
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.length()").value(1))
-               .andExpect(jsonPath("$[0].hotelName").value("TestHotel"))
-               .andExpect(jsonPath("$[0].availabilityStatus").value("Available"))
-               .andExpect(jsonPath("$[0].price").value(1500.0));
+        mockMvc.perform( post( "/api/v1/search" )
+                                 .contentType( MediaType.APPLICATION_JSON )
+                                 .content( objectMapper.writeValueAsString( searchRequest ) ) ) // Use the configured ObjectMapper
+               .andExpect( status().isOk() )
+               .andExpect( jsonPath( "$.length()" ).value( 1 ) )
+               .andExpect( jsonPath( "$[0].hotelName" ).value( "TestHotel" ) )
+               .andExpect( jsonPath( "$[0].availabilityStatus" ).value( "Available" ) )
+               .andExpect( jsonPath( "$[0].price" ).value( 1500.0 ) );
     }
 
 
     @TestConfiguration // Test-specific configuration
-    static class TestConfig {
+    static class TestConfig
+    {
 
         @Bean
-        public SearchService searchService() {
-            return Mockito.mock(SearchService.class);
+        public SearchService searchService()
+        {
+            return Mockito.mock( SearchService.class );
         }
 
         @Bean
-        public ContractRepo contractRepo() {
-            return Mockito.mock(ContractRepo.class);
+        public ContractRepo contractRepo()
+        {
+            return Mockito.mock( ContractRepo.class );
         }
     }
 }

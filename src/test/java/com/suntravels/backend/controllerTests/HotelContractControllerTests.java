@@ -21,8 +21,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 // Annotation to use MockitoExtension for mocking
-@ExtendWith(MockitoExtension.class)
-public class HotelContractControllerTests {
+@ExtendWith( MockitoExtension.class )
+public class HotelContractControllerTests
+{
 
     // Mocking the service layer
     @Mock
@@ -40,28 +41,30 @@ public class HotelContractControllerTests {
 
     // Setting up MockMvc and ObjectMapper before each test
     @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(hotelController).build(); // Standalone setup for MockMvc
+    void setUp()
+    {
+        mockMvc = MockMvcBuilders.standaloneSetup( hotelController ).build(); // Standalone setup for MockMvc
         objectMapper = new ObjectMapper(); // Initialize ObjectMapper
     }
 
     // Test for the addContract method in the controller
     @Test
-    void testAddContract() throws Exception {
+    void testAddContract() throws Exception
+    {
         // Creating a sample HotelContractDto object with test data
         HotelContractDto contractDto = new HotelContractDto();
-        contractDto.setHotelName("TestHotel"); // Setting hotel name for test
+        contractDto.setHotelName( "TestHotel" ); // Setting hotel name for test
 
         // Defining the mock behavior of the service layer
-        when(hotelService.addContract(any())).thenReturn(contractDto);
+        when( hotelService.addContract( any() ) ).thenReturn( contractDto );
 
         // Simulating a POST request to the /api/v1/contracts endpoint
-        mockMvc.perform(post("/api/v1/contracts") // Specify the endpoint
-                                                  .contentType(MediaType.APPLICATION_JSON) // Specify content type as JSON
-                                                  .content(objectMapper.writeValueAsString(contractDto))) // Convert DTO to JSON
-               .andExpect(status().isOk()); // Expect HTTP 200 OK response
+        mockMvc.perform( post( "/api/v1/contracts" ) // Specify the endpoint
+                                                     .contentType( MediaType.APPLICATION_JSON ) // Specify content type as JSON
+                                                     .content( objectMapper.writeValueAsString( contractDto ) ) ) // Convert DTO to JSON
+               .andExpect( status().isOk() ); // Expect HTTP 200 OK response
 
         // Verifying that the service method addContract was called exactly once
-        verify(hotelService, times(1)).addContract(any());
+        verify( hotelService, times( 1 ) ).addContract( any() );
     }
 }

@@ -16,8 +16,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SearchRequestIntegrationTests {
+@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
+public class SearchRequestIntegrationTests
+{
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -26,33 +27,36 @@ public class SearchRequestIntegrationTests {
     private int port; // Dynamically inject the running server port
 
     @Test
-    void testSearchRoomsE2E() {
+    void testSearchRoomsE2E()
+    {
         // Backend API URL
         String url = "http://localhost:" + port + "/api/v1/search";
 
         // Define the search criteria
         SearchRequest searchRequest = new SearchRequest(
-                LocalDate.of(2024, 12, 30), // Check-in date
+                LocalDate.of( 2024, 12, 30 ), // Check-in date
                 5, // Duration in days
-                List.of(new RoomRequest(2, 2)) // Room requirements (2 adults, 2 children)
+                List.of( new RoomRequest( 2, 2 ) ) // Room requirements (2 adults, 2 children)
         );
 
         // Send the request and get all available results
-        SearchResult[] results = testRestTemplate.postForObject(url, searchRequest, SearchResult[].class);
+        SearchResult[] results = testRestTemplate.postForObject( url, searchRequest, SearchResult[].class );
 
         // Verify that results are not empty
-        assertEquals(true, results.length > 0, "Expected at least one hotel in the results");
+        assertEquals( true, results.length > 0, "Expected at least one hotel in the results" );
 
         // Iterate through the list to find TestHotel
         boolean testHotelFound = false;
-        for (SearchResult result : results) {
-            if ("TestHotel".equals(result.getHotelName())) {
+        for( SearchResult result : results )
+        {
+            if( "TestHotel".equals( result.getHotelName() ) )
+            {
                 testHotelFound = true;
                 break;
             }
         }
 
         // Assert that TestHotel is in the results
-        assertEquals(true, testHotelFound, "Expected 'TestHotel' to be in the results");
+        assertEquals( true, testHotelFound, "Expected 'TestHotel' to be in the results" );
     }
 }

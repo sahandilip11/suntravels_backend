@@ -16,8 +16,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class HotelContractsServiceTests {
+@ExtendWith( MockitoExtension.class )
+public class HotelContractsServiceTests
+{
 
     @Mock
     private HotelRepo hotelRepo;
@@ -28,20 +29,22 @@ public class HotelContractsServiceTests {
     private Hotel hotel;
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         hotel = new Hotel();
-        hotel.setHotelName("TestHotel");
+        hotel.setHotelName( "TestHotel" );
     }
 
     @Test
-    void testFindByHotelName() {
+    void testFindByHotelName()
+    {
         String hotelName = "TestHotel";
 
-        when(hotelRepo.findByHotelName(hotelName)).thenReturn(Optional.of(hotel));
+        when( hotelRepo.findByHotelName( hotelName ) ).thenReturn( Optional.of( hotel ) );
 
-        HotelDto result = hotelService.findByHotelName(hotelName);
+        HotelDto result = hotelService.findByHotelName( hotelName );
 
-        assertEquals(hotelName, result.getHotelName());
-        verify(hotelRepo, times(1)).findByHotelName(hotelName);
+        assertEquals( hotelName, result.getHotelName() );
+        verify( hotelRepo, times( 1 ) ).findByHotelName( hotelName );
     }
 }

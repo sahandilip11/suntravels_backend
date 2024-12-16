@@ -12,33 +12,36 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@ActiveProfiles("test") // Activates the application-test.properties configuratio
-public class HotelRepoTests {
+@ActiveProfiles( "test" ) // Activates the application-test.properties configuratio
+public class HotelRepoTests
+{
 
     @Autowired
     private HotelRepo hotelRepo;
 
     @Test
-    void testSaveAndFindByHotelName() {
+    void testSaveAndFindByHotelName()
+    {
         // Arrange
         Hotel hotel = new Hotel();
-        hotel.setHotelName("TestHotel");
-        hotelRepo.save(hotel);
+        hotel.setHotelName( "TestHotel" );
+        hotelRepo.save( hotel );
 
         // Act
-        Optional<Hotel> foundHotel = hotelRepo.findByHotelName("TestHotel");
+        Optional<Hotel> foundHotel = hotelRepo.findByHotelName( "TestHotel" );
 
         // Assert
-        assertTrue(foundHotel.isPresent());
-        assertEquals("TestHotel", foundHotel.get().getHotelName());
+        assertTrue( foundHotel.isPresent() );
+        assertEquals( "TestHotel", foundHotel.get().getHotelName() );
     }
 
     @Test
-    void testFindByHotelNameNotFound() {
+    void testFindByHotelNameNotFound()
+    {
         // Act
-        Optional<Hotel> foundHotel = hotelRepo.findByHotelName("NonExistentHotel");
+        Optional<Hotel> foundHotel = hotelRepo.findByHotelName( "NonExistentHotel" );
 
         // Assert
-        assertFalse(foundHotel.isPresent());
+        assertFalse( foundHotel.isPresent() );
     }
 }

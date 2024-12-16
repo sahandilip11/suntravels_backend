@@ -10,33 +10,31 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-//@Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Entity
-@Table(name = "Contract")
-public class Contract {
+@Table( name = "Contract" )
+public class Contract
+{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contract_id", nullable = false, updatable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "contract_id", nullable = false, updatable = false )
     private Long contractId;
 
-    @Column(name = "valid_from", nullable = false)
+    @Column( name = "valid_from", nullable = false )
     private LocalDate validFrom;
 
-    @Column(name = "valid_to")
+    @Column( name = "valid_to" )
     private LocalDate validTo;
 
-    @Column(name = "mark_up_rate", nullable = false, precision = 5, scale = 2)
+    @Column( name = "mark_up_rate", nullable = false, precision = 5, scale = 2 )
     private BigDecimal markupRate;
 
     @JsonIgnore
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "hotel_id", nullable = false )
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany( mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true )
     private List<RoomType> roomTypeList;
 
     public Long getContractId()

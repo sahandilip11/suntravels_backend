@@ -15,8 +15,9 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HotelContractIntegrationTests {
+@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
+public class HotelContractIntegrationTests
+{
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -24,53 +25,56 @@ public class HotelContractIntegrationTests {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void testAddAndFetchContracts() {
+    void testAddAndFetchContracts()
+    {
         // Prepare a new contract with RoomTypeDto
         RoomTypeDto roomTypeDto = new RoomTypeDto(
                 null,  // contractId is null since it's not assigned yet
                 "Deluxe",
-                BigDecimal.valueOf(150.0),
+                BigDecimal.valueOf( 150.0 ),
                 10, // Number of rooms
                 2   // Max number of adults
         );
 
         HotelContractDto contractDto = new HotelContractDto();
-        contractDto.setHotelName("TestHotel");
-        contractDto.setValidFrom(LocalDate.now());
-        contractDto.setValidTo(LocalDate.now().plusDays(10));
-        contractDto.setMarkupRate(BigDecimal.valueOf(10.5));
-        contractDto.setRoomTypeList(Collections.singletonList(roomTypeDto));
+        contractDto.setHotelName( "TestHotel" );
+        contractDto.setValidFrom( LocalDate.now() );
+        contractDto.setValidTo( LocalDate.now().plusDays( 10 ) );
+        contractDto.setMarkupRate( BigDecimal.valueOf( 10.5 ) );
+        contractDto.setRoomTypeList( Collections.singletonList( roomTypeDto ) );
 
         // Add Contract
         ResponseEntity<HotelContractDto> response = restTemplate.postForEntity(
                 "/api/v1/contracts",
                 contractDto,
-                HotelContractDto.class);
+                HotelContractDto.class );
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("TestHotel", response.getBody().getHotelName());
+        assertEquals( HttpStatus.OK, response.getStatusCode() );
+        assertEquals( "TestHotel", response.getBody().getHotelName() );
 
         // Fetch All Contracts
         ResponseEntity<HotelContractDto[]> fetchResponse = restTemplate.getForEntity(
                 "/api/v1/contracts",
-                HotelContractDto[].class);
+                HotelContractDto[].class );
 
-        assertEquals(HttpStatus.OK, fetchResponse.getStatusCode());
+        assertEquals( HttpStatus.OK, fetchResponse.getStatusCode() );
 
         // Verify TestHotel exists in the fetched list
         boolean testHotelFound = false;
-        for (HotelContractDto fetchedContract : fetchResponse.getBody()) {
-            if ("TestHotel".equals(fetchedContract.getHotelName())) {
+        for( HotelContractDto fetchedContract : fetchResponse.getBody() )
+        {
+            if( "TestHotel".equals( fetchedContract.getHotelName() ) )
+            {
                 testHotelFound = true;
 
                 // Additional assertions to validate the room type
-                assertEquals("Deluxe", fetchedContract.getRoomTypeList().get(0).getTypeName());
-                assertEquals(10, fetchedContract.getRoomTypeList().get(0).getNoOfRooms());
+                assertEquals( "Deluxe", fetchedContract.getRoomTypeList().get( 0 ).getTypeName() );
+                assertEquals( 10, fetchedContract.getRoomTypeList().get( 0 ).getNoOfRooms() );
                 break; // No need to iterate further once the TestHotel is found
             }
         }
 
         // Assert that TestHotel was found
-        assertEquals(true, testHotelFound, "Expected 'TestHotel' to be present in the fetched contracts.");
+        assertEquals( true, testHotelFound, "Expected 'TestHotel' to be present in the fetched contracts." );
     }
 }

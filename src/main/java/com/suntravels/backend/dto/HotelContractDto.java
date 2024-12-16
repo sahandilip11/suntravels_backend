@@ -60,7 +60,7 @@ public class HotelContractDto
     {
     }
 
-    public HotelContractDto(Long contractId, String hotelName, LocalDate validFrom, LocalDate validTo, BigDecimal markupRate, List<RoomTypeDto> roomTypeList )
+    public HotelContractDto( Long contractId, String hotelName, LocalDate validFrom, LocalDate validTo, BigDecimal markupRate, List<RoomTypeDto> roomTypeList )
     {
         this.contractId = contractId;
         this.hotelName = hotelName;
