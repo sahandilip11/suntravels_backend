@@ -2,78 +2,138 @@ package com.suntravels.backend.model;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class SearchResult
-{
+/**
+ * Represents the result of a search for available rooms in a hotel.
+ * Contains details about room types, pricing, availability, and the hotel's name.
+ */
+public class SearchResult {
 
-    public SearchResult( List<RoomType> roomType, BigDecimal price, String availabilityStatus, String hotelName )
-    {
+    /**
+     * The list of room types available for this search result.
+     */
+    private List<RoomType> roomType;
+
+    /**
+     * The total price for the available rooms.
+     */
+    private BigDecimal price;
+
+    /**
+     * The availability status of the hotel (e.g., Available, Unavailable).
+     */
+    private String availabilityStatus;
+
+    /**
+     * The name of the hotel associated with this search result.
+     */
+    private String hotelName;
+
+    /**
+     * Default constructor for creating an empty {@link SearchResult} instance.
+     */
+    public SearchResult() {
+    }
+
+    /**
+     * Constructs a {@link SearchResult} with the specified details.
+     *
+     * @param roomType           the list of room types available
+     * @param price              the total price for the available rooms
+     * @param availabilityStatus the availability status of the hotel
+     * @param hotelName          the name of the hotel
+     */
+    public SearchResult(List<RoomType> roomType, BigDecimal price, String availabilityStatus, String hotelName) {
         this.roomType = roomType;
         this.price = price;
         this.availabilityStatus = availabilityStatus;
         this.hotelName = hotelName;
     }
 
-    public SearchResult()
-    {
-    }
-
-    public List<RoomType> getRoomType()
-    {
+    /**
+     * Gets the list of room types available for this search result.
+     *
+     * @return the list of room types
+     */
+    public List<RoomType> getRoomType() {
         return roomType;
     }
 
-    public void setRoomType( List<RoomType> roomType )
-    {
+    /**
+     * Sets the list of room types available for this search result.
+     *
+     * @param roomType the list of room types
+     */
+    public void setRoomType(List<RoomType> roomType) {
         this.roomType = roomType;
     }
 
-    public BigDecimal getPrice()
-    {
+    /**
+     * Gets the total price for the available rooms.
+     *
+     * @return the total price
+     */
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice( BigDecimal price )
-    {
+    /**
+     * Sets the total price for the available rooms.
+     *
+     * @param price the total price
+     */
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getAvailabilityStatus()
-    {
+    /**
+     * Gets the availability status of the hotel.
+     *
+     * @return the availability status
+     */
+    public String getAvailabilityStatus() {
         return availabilityStatus;
     }
 
-    public void setAvailabilityStatus( String availabilityStatus )
-    {
+    /**
+     * Sets the availability status of the hotel.
+     *
+     * @param availabilityStatus the availability status
+     */
+    public void setAvailabilityStatus(String availabilityStatus) {
         this.availabilityStatus = availabilityStatus;
     }
 
-    private List<RoomType> roomType;
-    private BigDecimal price;
-    private String availabilityStatus;
-
-    public String getHotelName()
-    {
+    /**
+     * Gets the name of the hotel associated with this search result.
+     *
+     * @return the hotel name
+     */
+    public String getHotelName() {
         return hotelName;
     }
 
-    public void setHotelName( String hotelName )
-    {
+    /**
+     * Sets the name of the hotel associated with this search result.
+     *
+     * @param hotelName the hotel name
+     */
+    public void setHotelName(String hotelName) {
         this.hotelName = hotelName;
     }
 
-    private String hotelName;
-
+    /**
+     * Provides a string representation of the {@link SearchResult}.
+     *
+     * @return a string representation of the search result
+     */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "SearchResult{" +
-                       "roomType=" + roomType.stream().map( RoomType::toString ).toList() +
+                       "roomType=" + roomType.stream().map(RoomType::toString).toList() +
                        ", price=" + price +
                        ", availabilityStatus='" + availabilityStatus + '\'' +
                        ", hotelName='" + hotelName + '\'' +
                        '}';
     }
 }
-
