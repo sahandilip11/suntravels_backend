@@ -1,6 +1,8 @@
 package com.suntravels.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * Represents a request for room booking, including the number of rooms and adults.
@@ -10,12 +12,13 @@ public class RoomRequest {
     /**
      * The number of rooms requested.
      */
-    private int numberOfRooms;
+    @NotNull(message = "Number of rooms is required")
+    @Positive(message = "Number of rooms must be greater than 0")
+    private Integer numberOfRooms;
 
-    /**
-     * The number of adults for the requested rooms.
-     */
-    private int numberOfAdults;
+    @NotNull(message = "Number of adults is required")
+    @Positive(message = "Number of adults must be greater than 0")
+    private Integer numberOfAdults;
 
     /**
      * Default constructor for creating an empty {@link RoomRequest} instance.

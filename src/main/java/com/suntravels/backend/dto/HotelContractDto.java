@@ -1,5 +1,13 @@
 package com.suntravels.backend.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -11,11 +19,26 @@ import java.util.List;
 public class HotelContractDto {
 
     private Long contractId;
+
+    @NotBlank(message = "Hotel name must not be blank")
+    @Size(max = 100, message = "Hotel name must not exceed 100 characters")
     private String hotelName;
+
+    @NotNull(message = "Valid from date is required")
+    @FutureOrPresent(message = "Valid from date must be today or in the future")
     private LocalDate validFrom;
+
+    @NotNull(message = "Valid to date is required")
+    @Future(message = "Valid to date must be in the future")
     private LocalDate validTo;
+
+    @NotNull(message = "Markup rate is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Markup rate must be greater than 0")
     private BigDecimal markupRate;
-    private List<RoomTypeDto> roomTypeList;
+
+    @NotNull(message = "Room type list cannot be null")
+    @Size(min = 1, message = "At least one room type is required")
+    private List<@Valid RoomTypeDto> roomTypeList;
 
     /**
      * Default constructor for creating an empty {@link HotelContractDto} instance.

@@ -1,6 +1,10 @@
 package com.suntravels.backend.dto;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 /**
@@ -9,10 +13,34 @@ import java.math.BigDecimal;
  */
 public class RoomTypeDto {
 
+    /**
+     * The unique identifier of the contract associated with the room type.
+     */
     private Long contractId;
+
+    /**
+     * The name of the room type. Must not be blank.
+     */
+    @NotBlank(message = "Room type name must not be blank")
     private String typeName;
+
+    /**
+     * The price per person for the room. Must be greater than 0.
+     */
+    @NotNull(message = "Per person price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Per person price must be greater than 0")
     private BigDecimal perPersonPrice;
+
+    /**
+     * The number of rooms available for this room type. Must be greater than 0.
+     */
+    @Positive(message = "Number of rooms must be greater than 0")
     private int noOfRooms;
+
+    /**
+     * The maximum number of adults allowed in this room type. Must be greater than 0.
+     */
+    @Positive(message = "Maximum number of adults must be greater than 0")
     private int maxNoOfAdults;
 
     /**

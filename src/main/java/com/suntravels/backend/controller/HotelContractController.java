@@ -2,6 +2,7 @@ package com.suntravels.backend.controller;
 
 import com.suntravels.backend.dto.HotelContractDto;
 import com.suntravels.backend.service.HotelContractService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +33,11 @@ public class HotelContractController {
     /**
      * Adds a new hotel contract.
      *
-     * @param contractDto the data transfer object representing the hotel contract
-     * @return the saved {@link HotelContractDto} object
+     * @param contractDto the data transfer object representing the hotel contract. Must be valid.
+     * @return the saved {@link HotelContractDto} object containing details of the new contract
      */
     @PostMapping
-    public HotelContractDto addContract(@RequestBody HotelContractDto contractDto) {
+    public HotelContractDto addContract(@Valid @RequestBody HotelContractDto contractDto) {
         return hotelContractService.addContract(contractDto);
     }
 
@@ -44,6 +45,7 @@ public class HotelContractController {
      * Retrieves all hotel contracts.
      *
      * @return a {@link ResponseEntity} containing a list of {@link HotelContractDto} objects
+     *         with details of all contracts
      */
     @GetMapping
     public ResponseEntity<List<HotelContractDto>> getContracts() {
@@ -53,7 +55,7 @@ public class HotelContractController {
     /**
      * Deletes a hotel contract by ID.
      *
-     * @param id the ID of the contract to be deleted
+     * @param id the unique identifier of the contract to be deleted
      */
     @DeleteMapping("/{id}")
     public void DeleteContract(@PathVariable Long id) {

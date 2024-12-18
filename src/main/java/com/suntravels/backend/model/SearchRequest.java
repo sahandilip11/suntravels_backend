@@ -1,5 +1,11 @@
 package com.suntravels.backend.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,17 +18,24 @@ public class SearchRequest {
     /**
      * The check-in date for the search.
      */
+    @NotNull(message = "Check-in date is required")
+    @FutureOrPresent(message = "Check-in date must be today or in the future")
     private LocalDate checkInDate;
 
     /**
      * The number of nights for the stay.
      */
-    private int numberOfNights;
+    @NotNull(message = "Number of nights is required")
+    @Positive(message = "Number of nights must be greater than 0")
+    private Integer numberOfNights;
 
     /**
      * A list of room requests specifying the number of rooms and adults.
      */
-    private List<RoomRequest> roomRequests;
+    @NotNull(message = "Room requests cannot be null")
+    @Size(min = 1, message = "At least one room request is required")
+    private List<@Valid RoomRequest> roomRequests;
+
 
     /**
      * Default constructor for creating an empty {@link SearchRequest} instance.

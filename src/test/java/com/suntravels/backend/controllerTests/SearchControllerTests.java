@@ -24,79 +24,103 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest( SearchController.class )
-@Import( SearchControllerTests.TestConfig.class ) // Import the test-specific configuration
-public class SearchControllerTests
-{
+/**
+ * Unit tests for the {@link SearchController} class.
+ * Tests the functionality of the search API endpoint using MockMvc and a mocked SearchService.
+ */
+@WebMvcTest(SearchController.class)
+@Import(SearchControllerTests.TestConfig.class) // Import the test-specific configuration
+public class SearchControllerTests {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc mockMvc; // MockMvc to perform requests to the controller
 
     @Autowired
     private SearchService searchService; // Mocked SearchService
 
     @Autowired
-    private ObjectMapper objectMapper; // Use a shared instance
+    private ObjectMapper objectMapper; // ObjectMapper for JSON serialization/deserialization
 
+    /**
+     * Sets up the test environment by configuring the ObjectMapper.
+     * This ensures proper handling of Java 8 date/time types like {@link LocalDate}.
+     */
     @BeforeEach
-    void setUp()
-    {
+    void setUp() {
         objectMapper = new ObjectMapper();
 
         // Register JavaTimeModule for handling LocalDate
-        objectMapper.registerModule( new JavaTimeModule() );
+        objectMapper.registerModule(new JavaTimeModule());
 
         // Disable serialization of dates as timestamps
-        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
+    /**
+     * Tests the searchRooms endpoint with a valid {@link SearchRequest}.
+     * Verifies the endpoint returns the expected {@link SearchResult}.
+     *
+     * @throws Exception if an error occurs during the request
+     */
     @Test
-    void testSearchRooms() throws Exception
-    {
+    void testSearchRooms() throws Exception {
+        // Create a valid SearchRequest
         SearchRequest searchRequest = new SearchRequest(
-                LocalDate.of( 2024, 12, 15 ),
-                5,
-                List.of( new RoomRequest( 2, 2 ) )
+                LocalDate.of(2024, 12, 20), // Check-in date
+                5, // Number of nights
+                List.of(new RoomRequest(2, 2)) // Room requests
         );
 
+        // Mock the service response
         SearchResult mockResult = new SearchResult(
-                null,
-                BigDecimal.valueOf( 1500 ),
-                "Available",
-                "TestHotel"
+                null, // Room type details (not needed for this test)
+                BigDecimal.valueOf(1500), // Price
+                "Available", // Availability status
+                "TestHotel" // Hotel name
         );
 
-        Mockito.when( searchService.searchRooms( Mockito.any( SearchRequest.class ) ) ).thenReturn( List.of( mockResult ) );
+        // Configure the mock service behavior
+        Mockito.when(searchService.searchRooms(Mockito.any(SearchRequest.class)))
+               .thenReturn(List.of(mockResult));
 
-        mockMvc.perform( post( "/api/v1/search" )
-                                 .contentType( MediaType.APPLICATION_JSON )
-                                 .content( objectMapper.writeValueAsString( searchRequest ) ) ) // Use the configured ObjectMapper
-               .andExpect( status().isOk() )
-               .andExpect( jsonPath( "$.length()" ).value( 1 ) )
-               .andExpect( jsonPath( "$[0].hotelName" ).value( "TestHotel" ) )
-               .andExpect( jsonPath( "$[0].availabilityStatus" ).value( "Available" ) )
-               .andExpect( jsonPath( "$[0].price" ).value( 1500.0 ) );
+        // Perform the POST request to the search endpoint and verify the response
+        mockMvc.perform(post("/api/v1/search")
+                                .contentType(MediaType.APPLICATION_JSON) // Set content type to JSON
+                                .content(objectMapper.writeValueAsString(searchRequest))) // Serialize the request to JSON
+               .andExpect(status().isOk()) // Expect HTTP 200 OK status
+               .andExpect(jsonPath("$.length()").value(1)) // Expect one result in the response
+               .andExpect(jsonPath("$[0].hotelName").value("TestHotel")) // Verify hotel name
+               .andExpect(jsonPath("$[0].availabilityStatus").value("Available")) // Verify availability status
+               .andExpect(jsonPath("$[0].price").value(1500.0)); // Verify price
     }
 
+    /**
+     * Test configuration for injecting mock beans into the test context.
+     */
+    @TestConfiguration
+    static class TestConfig {
 
-    @TestConfiguration // Test-specific configuration
-    static class TestConfig
-    {
-
+        /**
+         * Provides a mock implementation of {@link SearchService}.
+         *
+         * @return the mocked SearchService instance
+         */
         @Bean
-        public SearchService searchService()
-        {
-            return Mockito.mock( SearchService.class );
+        public SearchService searchService() {
+            return Mockito.mock(SearchService.class);
         }
 
+        /**
+         * Provides a mock implementation of {@link ContractRepo}.
+         *
+         * @return the mocked ContractRepo instance
+         */
         @Bean
-        public ContractRepo contractRepo()
-        {
-            return Mockito.mock( ContractRepo.class );
+        public ContractRepo contractRepo() {
+            return Mockito.mock(ContractRepo.class);
         }
     }
 }

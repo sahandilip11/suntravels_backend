@@ -1,12 +1,22 @@
 package com.suntravels.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * Data Transfer Object (DTO) for representing hotel information.
  * This class is used to transfer hotel data between layers of the application.
  */
 public class HotelDto {
 
+    /**
+     * The unique identifier of the hotel.
+     */
     private Long hotelId;
+
+    /**
+     * The name of the hotel. Must not be blank.
+     */
+    @NotBlank(message = "Hotel name must not be blank")
     private String hotelName;
 
     /**
